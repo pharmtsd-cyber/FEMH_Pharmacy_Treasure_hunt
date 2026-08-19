@@ -234,10 +234,30 @@ function renderLobby() {
     }
 
     let totalLevels = 0, totalCompleted = 0;
-    ROUTE_CONFIG.forEach((route) => {
+
+    // ★ 新增：預先檢查最後一條路線之前的所有任務是否都已 100% 完成
+    let priorRoutesCompleted = true;
+    if (ROUTE_CONFIG.length > 1) {
+        for (let i = 0; i < ROUTE_CONFIG.length - 1; i++) {
+            let routeCompletes = ROUTE_CONFIG[i].nodes.filter(id => completedNodes.includes(id)).length;
+            if (routeCompletes < ROUTE_CONFIG[i].nodes.length) {
+                priorRoutesCompleted = false;
+                break;
+            }
+        }
+    }
+
+    ROUTE_CONFIG.forEach((route, index) => {
         totalLevels += route.nodes.length;
         const completedCount = route.nodes.filter(id => completedNodes.includes(id)).length;
         totalCompleted += completedCount;
+
+        // ★ 新增：如果是最後一條路線，且前面的路線尚未完成，則直接隱藏不顯示
+        // (如果是上帝模式 IS_TEST_MODE 或考卷回顧模式 REVIEW_MODE 則依然顯示)
+        const isLastRoute = (index === ROUTE_CONFIG.length - 1);
+        if (isLastRoute && !priorRoutesCompleted && !REVIEW_MODE && !IS_TEST_MODE) {
+            return; 
+        }
 
         const groupDiv = document.createElement('div');
         groupDiv.className = 'task-group';
