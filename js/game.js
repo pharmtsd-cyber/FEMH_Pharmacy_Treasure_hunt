@@ -707,58 +707,73 @@ function renderQuestionButtons(q, node) {
          return;
      }
 
-     if (q.type === 'Text' || (q.type === 'Scan' && REVIEW_MODE)) {
-         const input = document.createElement('input');
-         input.type = 'text'; input.id = 'ans-input';
-         const btn = document.createElement('button');
-         btn.className = 'btn btn-primary'; btn.innerText = '送出';
-         if (REVIEW_MODE) {
-             input.value = `正確答案：${q.answer}`;
-             input.disabled = true;
-             input.style.border = "2px solid #28a745";
-             input.style.backgroundColor = "#e6ffec";
-             input.style.color = "#155724";
-             input.style.fontWeight = "bold";
-             btn.style.display = 'none';
-             const backBtn = document.createElement('button');
-             backBtn.className = 'btn btn-primary'; backBtn.innerText = '返回列表';
-             backBtn.onclick = () => renderLobby();
-             area.appendChild(input); area.appendChild(backBtn);
+        if (q.type === 'Text' || (q.type === 'Scan' && REVIEW_MODE)) {
+             const input = document.createElement('input');
+             input.type = 'text'; input.id = 'ans-input';
+             const btn = document.createElement('button');
+             btn.className = 'btn btn-primary'; btn.innerText = '送出';
+             if (REVIEW_MODE) {
+                 input.value = `正確答案：${q.answer}`;
+                 input.disabled = true;
+                 input.style.border = "2px solid #28a745";
+                 input.style.backgroundColor = "#e6ffec";
+                 input.style.color = "#155724";
+                 input.style.fontWeight = "bold";
+                 btn.style.display = 'none';
+                 area.appendChild(input); 
+             } else {
+                 btn.onclick = () => {
+                    const userVal = document.getElementById('ans-input').value;
+                    if(!userVal.trim()) { AppModal.showAlert('提示', '請輸入答案'); return; }
+                    AppModal.showConfirm('提交確認', `確定要送出答案「${userVal}」嗎？`, () => {
+                       checkAnswer(userVal, q, node);
+                    });
+                 };
+                 area.appendChild(input); area.appendChild(btn);
+             }
          } else {
-             btn.onclick = () => {
-                const userVal = document.getElementById('ans-input').value;
-                if(!userVal.trim()) { AppModal.showAlert('提示', '請輸入答案'); return; }
-                AppModal.showConfirm('提交確認', `確定要送出答案「${userVal}」嗎？`, () => {
-                   checkAnswer(userVal, q, node);
-                });
-             };
-             area.appendChild(input); area.appendChild(btn);
-         }
-     } else {
-         if(q.options) {
-             q.options.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.className = 'btn mcq-btn'; 
-                btn.innerText = opt;
-                if (REVIEW_MODE) {
-                    btn.classList.add('btn-review-disabled'); 
-                    if (opt.trim().toLowerCase() === q.answer.trim().toLowerCase()) {
-                        btn.classList.remove('btn-review-disabled');
-                        btn.classList.add('btn-review-correct'); 
+             if(q.options) {
+                 q.options.forEach(opt => {
+                    const btn = document.createElement('button');
+                    btn.className = 'btn mcq-btn'; 
+                    btn.innerText = opt;
+                    if (REVIEW_MODE) {
+                        btn.classList.add('btn-review-disabled'); 
+                        if (opt.trim().toLowerCase() === q.answer.trim().toLowerCase()) {
+                            btn.classList.remove('btn-review-disabled');
+                            btn.classList.add('btn-review-correct'); 
+                        }
+                    } else {
+                        btn.onclick = () => {
+                           AppModal.showConfirm('選擇確認', `確定要選擇「${opt}」作為答案嗎？`, () => {
+                              checkAnswer(opt, q, node);
+                           });
+                        };
                     }
-                } else {
-                    btn.onclick = () => {
-                       AppModal.showConfirm('選擇確認', `確定要選擇「${opt}」作為答案嗎？`, () => {
-                          checkAnswer(opt, q, node);
-                       });
-                    };
-                }
-                area.appendChild(btn);
-             });
+                    area.appendChild(btn);
+                 });
+             }
          }
+    
+         // ★ 新增：統一在回顧模式最下方顯示「詳解/參考資料」與「返回按鈕」
          if (REVIEW_MODE) {
+             const feedbackBox = document.createElement('div');
+             // 設定詳解區塊的樣式
+             feedbackBox.style.cssText = 'margin-top:20px; padding:15px; background:#f8fbff; border-left:4px solid #17a2b8; border-radius:6px; line-height:1.6; color:#004085;';
+             
+             let feedbackHtml = `<strong>📝 詳解說明：</strong><br>${q.feedbackCorrect || '無特別說明'}`;
+             
+             if (q.feedbackLink) { 
+                 // 如果有連結，就產生按鈕
+                 feedbackHtml += `<br><a href="${q.feedbackLink}" target="_blank" style="background:#17a2b8; color:white; text-decoration:none; padding:10px 20px; border-radius:6px; display:block; width:fit-content; margin:15px auto 5px; font-weight:bold; box-shadow:0 2px 5px rgba(0,0,0,0.15);">🔗 點此查看參考資料</a>`; 
+             }
+             feedbackBox.innerHTML = feedbackHtml;
+             area.appendChild(feedbackBox);
+    
+             // 產生返回按鈕
              const backBtn = document.createElement('button');
-             backBtn.className = 'btn btn-primary'; backBtn.style.marginTop = '20px';
+             backBtn.className = 'btn btn-primary'; 
+             backBtn.style.marginTop = '20px';
              backBtn.innerText = '返回列表';
              backBtn.onclick = () => renderLobby();
              area.appendChild(backBtn);
