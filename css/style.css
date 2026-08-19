@@ -230,3 +230,8 @@ h2 { font-size: 1.5rem; margin-bottom: 15px; } /* 關卡標題 */
 .btn-side-quest, .btn-hint {
   font-size: 1.05rem !important; 
 }
+
+/* 放大「選擇要查閱的錦囊」彈窗內的清單按鈕文字 */
+.sq-list-btn {
+  font-size: 1.15rem !important; 
+}
