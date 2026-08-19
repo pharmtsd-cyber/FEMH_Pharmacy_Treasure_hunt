@@ -199,3 +199,17 @@
       }
       .btn-cancel { background: #e9ecef; color: #495057;
       }
+
+      /* --- 字體放大微調 --- */
+      /* 選擇題選項按鈕 */
+      .mcq-btn {
+        font-size: 1.15rem; 
+        padding: 16px 20px;
+      }
+      
+      /* 標題文字比例調整 */
+      .header-title { font-size: 1.4rem; } /* 頂部標題 */
+      h2 { font-size: 1.5rem; margin-bottom: 15px; } /* 關卡標題 */
+      .modal-header { font-size: 1.3rem !important; } /* 彈窗標題 */
+      .task-header { font-size: 1.15rem; } /* 任務列表群組標題 */
+      .leaderboard-title { font-size: 1.2rem; } /* 排行榜標題 */
