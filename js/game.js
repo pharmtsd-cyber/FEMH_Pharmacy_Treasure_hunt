@@ -718,7 +718,7 @@ function renderQuestionButtons(q, node) {
          if(q.options) {
              q.options.forEach(opt => {
                 const btn = document.createElement('button');
-                btn.className = 'btn'; 
+                btn.className = 'btn mcq-btn'; 
                 btn.innerText = opt;
                 if (REVIEW_MODE) {
                     btn.classList.add('btn-review-disabled'); 
