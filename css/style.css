@@ -8,6 +8,12 @@
         --shadow: 0 4px 12px rgba(0,0,0,0.15);
       }
 
+      html, body {
+        max-width: 100vw;
+        overflow-x: hidden; /* 隱藏水平捲軸，侷限在螢幕寬度內 */
+        touch-action: pan-y; /* 停用雙指縮放，僅允許垂直上下滑動 */
+      }
+
       body { font-family: 'Noto Sans TC', sans-serif; background-color: var(--bg-color);
         color: var(--text-color); margin: 0; padding: 10px; display: flex; justify-content: center; align-items: center; min-height: 100vh;
       }
