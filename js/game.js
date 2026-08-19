@@ -1,4 +1,4 @@
-const ENDING_RULES = { S_SCORE: 160, S_TIME: 600, A_SCORE: 120 };
+const ENDING_RULES = { S_SCORE: 450, S_TIME: 10800, A_SCORE:400  };
 let ROUTE_CONFIG = [];
 let gameData = {};
 let currentNodeId = 'Start_01';
