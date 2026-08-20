@@ -898,9 +898,9 @@ function updateMedia(url, targetId) {
 }
 
 function useHint() {
-    AppModal.showConfirm('使用提示', '確定要使用提示嗎？\n(總成績將增加 20 秒懲罰)', () => {
-        penaltyTime += 20; 
-        nodePenalties[currentNodeId] = (nodePenalties[currentNodeId] || 0) + 20;
+    AppModal.showConfirm('使用提示', '確定要使用提示嗎？\n(總成績將增加 60 秒懲罰)', () => {
+        penaltyTime += 60; 
+        nodePenalties[currentNodeId] = (nodePenalties[currentNodeId] || 0) + 60;
         usedHints[currentNodeId] = true;
         document.getElementById('hint-text').classList.remove('hidden');
         document.getElementById('btn-use-hint').classList.add('hidden');
