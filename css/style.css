@@ -114,8 +114,14 @@ body { font-family: 'Noto Sans TC', sans-serif; background-color: var(--bg-color
 }
 .btn-review-correct { border: 2px solid #28a745 !important; background-color: #e6ffec !important; color: #155724 !important;
   font-weight: bold; position: relative; opacity: 1 !important; }
-.btn-review-correct::after { content: '★ 正確解答'; position: absolute;
-  right: 15px; font-size: 0.85rem; color: #28a745; }
+.btn-review-correct::after { 
+  content: ' (★ 正確解答)'; 
+  position: static; /* 取消絕對定位 */
+  display: block;   /* 讓文字直接換行顯示在選項下方 */
+  font-size: 1rem; 
+  color: #28a745; 
+  margin-top: 5px; 
+}
 
 .btn { display: block; width: 100%; padding: 15px;
   margin: 10px 0; background: var(--card-bg); border: 2px solid #e9ecef; color: var(--accent-color); border-radius: 6px; cursor: pointer; text-align: center; font-weight: bold;
