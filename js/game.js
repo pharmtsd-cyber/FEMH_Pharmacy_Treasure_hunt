@@ -823,6 +823,37 @@ function updateDisplay() {
     const min = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
     const sec = String(totalSeconds % 60).padStart(2, '0');
     document.getElementById('timer-display').innerText = `${min}:${sec}`;
+
+    // ★ 新增：計算並顯示本題耗時
+    const localBadge = document.getElementById('local-timer-badge');
+    const localDisplay = document.getElementById('local-timer-display');
+    if (localBadge && localDisplay) {
+        if (!REVIEW_MODE && currentNodeId && nodeStartTime) {
+            const node = gameData.nodes.find(n => n.id === currentNodeId);
+            if (node && node.type.toLowerCase() === 'question') {
+                localBadge.classList.remove('hidden');
+                let localSecs = Math.floor((new Date() - nodeStartTime) / 1000);
+                if (localSecs < 0) localSecs = 0;
+                const lm = String(Math.floor(localSecs / 60)).padStart(2, '0');
+                const ls = String(localSecs % 60).padStart(2, '0');
+                localDisplay.innerText = `${lm}:${ls}`;
+                
+                // 提示變色機制：超過 60 秒變紅色提醒玩家
+                if (localSecs >= 60) {
+                    localBadge.style.background = '#f8d7da';
+                    localBadge.style.color = '#721c24';
+                } else {
+                    localBadge.style.background = '#fff3cd';
+                    localBadge.style.color = '#856404';
+                }
+            } else {
+                localBadge.classList.add('hidden');
+            }
+        } else {
+            localBadge.classList.add('hidden');
+        }
+    }
+
     return totalSeconds;
 }
 
