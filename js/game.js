@@ -428,7 +428,7 @@ function renderNode(nodeId) {
 
     const btnOpenSQ = document.getElementById('btn-open-sq');
     if (btnOpenSQ) {
-        if (nodeId.startsWith('SQ_') || REVIEW_MODE) {
+        if (nodeId.startsWith('SQ_')) {
             btnOpenSQ.classList.add('hidden');
         } else if (node.type && node.type.toLowerCase() === 'question') {
             btnOpenSQ.classList.remove('hidden');
