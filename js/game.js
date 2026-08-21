@@ -618,12 +618,13 @@ function checkAnswer(userAns, q, node) {
        const deduct = -Math.abs(parseInt(q.scoreMinus || 0));
        let scoreMsg = "";
 
-       if (!nodeScoreDeductions[currentNodeId]) {
-           score += deduct;
-           nodeScoreDeductions[currentNodeId] = deduct;
+        if (deduct < 0) {
+           score += deduct; // 每次答錯都確實從總分扣除
+           // 累加該題的總扣分，這樣成績單跟回顧模式才能顯示這題總共被扣了多少
+           nodeScoreDeductions[currentNodeId] = (nodeScoreDeductions[currentNodeId] || 0) + deduct;
            scoreMsg = `(本次扣除 ${Math.abs(deduct)} 分)`;
        } else {
-           scoreMsg = `(已扣過分，本次不重複扣分)`;
+           scoreMsg = `(本題答錯不扣分)`;
        }
        
        const duration = (new Date() - nodeStartTime) / 1000;
