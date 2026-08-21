@@ -6,7 +6,7 @@ let lastMainNodeId = null;
 let studentId = ''; 
 let userName = '';
 let userSchool = '';
-let score = 100;
+let score = 0;
 let pathHistory = []; 
 let completedNodes = [];
 let gameStartTime = null;
@@ -139,7 +139,7 @@ function checkLogin() {
         document.getElementById('school-text').innerText = userSchool;
         document.getElementById('btn-logout').classList.remove('hidden'); // 顯示登出按鈕
         
-        score = Number(res.score); if (isNaN(score)) score = 100;
+        score = Number(res.score); if (isNaN(score)) score = 0;
         loadedTime = Number(res.totalTime); if (isNaN(loadedTime)) loadedTime = 0;
 
         nodePenalties = JSON.parse(res.nodePenalties || '{}');
@@ -615,7 +615,7 @@ function checkAnswer(userAns, q, node) {
            }
        });
     } else {
-       const deduct = parseInt(q.scoreMinus || 0);
+       const deduct = -Math.abs(parseInt(q.scoreMinus || 0));
        let scoreMsg = "";
 
        if (!nodeScoreDeductions[currentNodeId]) {
